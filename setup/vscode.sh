@@ -20,29 +20,52 @@ DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
 if ! command -v code &> /dev/null; then
     print_warning "VS Code is not installed or not in PATH"
     print_status "Please install VS Code first, or make sure it's in your PATH"
+    # Exit with non-zero so caller can decide; do not abort the entire dotfiles install here
     exit 1
+fi
+
+# Sanity-check the `code` CLI. On some systems `code` may crash (Electron issues).
+CODE_CLI_OK=true
+code_version_output=""
+if ! code_version_output=$(code --version 2>&1); then
+    print_warning "The 'code' CLI exists but failed to run (will skip extension installation). Output: $code_version_output"
+    CODE_CLI_OK=false
+else
+    if ! echo "$code_version_output" | head -n1 | grep -Eq '^[0-9]+'; then
+        print_warning "Unexpected 'code --version' output (will skip extension installation):\n$code_version_output"
+        CODE_CLI_OK=false
+    else
+        print_status "VS Code CLI detected: $(echo "$code_version_output" | head -n1)"
+    fi
 fi
 
 # Install VS Code extensions
 if [ -f "$DOTFILES_DIR/vscode/extensions.txt" ]; then
-    print_status "Installing VS Code extensions..."
+    if [ "$CODE_CLI_OK" = true ]; then
+        print_status "Installing VS Code extensions..."
 
-    while IFS= read -r line; do
-        # Skip comments and empty lines
-        if [[ "$line" =~ ^[[:space:]]*# ]] || [[ -z "${line// }" ]]; then
-            continue
-        fi
-        
-        extension=$(echo "$line" | sed 's/[[:space:]]*#.*//')  # Remove inline comments
-        extension=$(echo "$extension" | xargs)  # Trim whitespace
-        
-        if [ -n "$extension" ]; then
-            print_status "Installing extension: $extension"
-            code --install-extension "$extension"
-        fi
-    done < "$DOTFILES_DIR/vscode/extensions.txt"
+        while IFS= read -r line; do
+            # Skip comments and empty lines
+            if [[ "$line" =~ ^[[:space:]]*# ]] || [[ -z "${line// }" ]]; then
+                continue
+            fi
 
-    print_success "VS Code extensions installation completed!"
+            extension=$(echo "$line" | sed 's/[[:space:]]*#.*//')  # Remove inline comments
+            extension=$(echo "$extension" | xargs)  # Trim whitespace
+
+            if [ -n "$extension" ]; then
+                print_status "Installing extension: $extension"
+                out=$(code --install-extension "$extension" 2>&1) || {
+                    print_warning "Failed to install extension $extension; continuing. Output:\n$out"
+                    continue
+                }
+            fi
+        done < "$DOTFILES_DIR/vscode/extensions.txt"
+
+        print_success "VS Code extensions installation completed!"
+    else
+        print_warning "Skipping extension installation because 'code' CLI is not functional. You can install extensions manually later."
+    fi
 else
     print_warning "extensions.txt not found, skipping extension installation"
 fi

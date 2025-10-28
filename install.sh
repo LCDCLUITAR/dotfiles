@@ -167,7 +167,11 @@ print_status "Setting up VS Code..."
 if [[ "$DRY_RUN" == "true" ]]; then
     print_dry_run "source $DOTFILES_DIR/setup/vscode.sh"
 else
-    source "$DOTFILES_DIR/setup/vscode.sh"
+    # Run VS Code setup in a separate process so a failure doesn't abort the whole install
+    chmod +x "$DOTFILES_DIR/setup/vscode.sh" 2>/dev/null || true
+    if ! bash "$DOTFILES_DIR/setup/vscode.sh"; then
+        print_warning "VS Code setup script failed or 'code' CLI crashed. Continuing installation. You may need to run $DOTFILES_DIR/setup/vscode.sh manually."
+    fi
 fi
 
 # Set Zsh as default shell if not already

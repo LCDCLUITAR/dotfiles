@@ -85,7 +85,16 @@ for package in "${HOMEBREW_PACKAGES[@]}"; do
         print_success "$package is already installed"
     else
         print_status "Installing $package..."
-        brew install "$package"
+        # Capture output so failures don't cause the parent script (sourced with set -e)
+        output=$(brew install "$package" 2>&1) || {
+            # If brew reports it's already installed, treat as success
+            if echo "$output" | grep -iq "already installed"; then
+                print_success "$package is already installed (brew reported)"
+            else
+                print_warning "Failed to install $package. Continuing. Output:\n$output"
+            fi
+            continue
+        }
     fi
 done
 
@@ -97,14 +106,30 @@ for cask in "${HOMEBREW_CASKS[@]}"; do
         print_success "$cask is already installed"
     else
         print_status "Installing $cask..."
-        brew install --cask "$cask"
+        # Try to install, but capture output and handle common benign failures
+        output=$(brew install --cask "$cask" 2>&1) || {
+            # If app already exists in /Applications, brew fails — treat as success
+            if echo "$output" | grep -q "It seems there is already an App at" || echo "$output" | grep -iq "already installed"; then
+                print_success "$cask already present on system"
+            elif echo "$output" | grep -iq "conflicts with"; then
+                print_warning "Cask $cask conflicts with another cask; skipping. Output:\n$output"
+            else
+                print_warning "Failed to install cask $cask. Continuing. Output:\n$output"
+            fi
+            continue
+        }
     fi
 done
 
 # Install fzf key bindings and fuzzy completion
 if command -v fzf &> /dev/null; then
     print_status "Setting up fzf key bindings..."
-    $(brew --prefix)/opt/fzf/install --all
+    # Only run the installer if the shell rc file exists to avoid write errors
+    if [ -f "$HOME/.zshrc" ] || [ -f "$HOME/.bashrc" ]; then
+        $(brew --prefix)/opt/fzf/install --all || print_warning "fzf install had issues; you may need to run $(brew --prefix)/opt/fzf/install --all manually"
+    else
+        print_warning "No shell rc file (~/.zshrc or ~/.bashrc) found yet — skipping automatic fzf rc updates. Run '$(brew --prefix)/opt/fzf/install --all' after dotfiles linking if you want to enable shell integration."
+    fi
 fi
 
 print_success "Homebrew packages installation completed!"
