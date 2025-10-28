@@ -70,7 +70,7 @@ fi
 if ! command -v brew &> /dev/null; then
     print_status "Installing Homebrew..."
     execute_or_dry_run '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
-    
+
     # Add Homebrew to PATH for Apple Silicon Macs
     if [[ $(uname -m) == "arm64" ]]; then
         execute_or_dry_run 'echo '\''eval "$(/opt/homebrew/bin/brew shellenv)"'\'' >> ~/.zprofile'
@@ -78,7 +78,7 @@ if ! command -v brew &> /dev/null; then
             eval "$(/opt/homebrew/bin/brew shellenv)"
         fi
     fi
-    
+
     print_success "Homebrew installed!"
 else
     print_success "Homebrew is already installed"
@@ -86,7 +86,9 @@ fi
 
 # Update Homebrew
 print_status "Updating Homebrew..."
-execute_or_dry_run "brew update"# Install Oh My Zsh if not installed
+execute_or_dry_run "brew update"
+
+# Install Oh My Zsh if not installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     print_status "Installing Oh My Zsh..."
     execute_or_dry_run 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
@@ -124,7 +126,7 @@ print_status "Creating symlinks for dotfiles..."
 backup_and_link() {
     local source_file="$1"
     local target_file="$2"
-    
+
     if [[ "$DRY_RUN" == "true" ]]; then
         if [ -f "$target_file" ] || [ -L "$target_file" ]; then
             print_dry_run "Would backup $target_file to $target_file.backup"
@@ -132,15 +134,15 @@ backup_and_link() {
         print_dry_run "Would link $source_file -> $target_file"
         return
     fi
-    
+
     if [ -f "$target_file" ] || [ -L "$target_file" ]; then
         print_warning "Backing up existing $target_file to $target_file.backup"
         mv "$target_file" "$target_file.backup"
     fi
-    
+
     # Create directory if it doesn't exist
     mkdir -p "$(dirname "$target_file")"
-    
+
     print_status "Linking $source_file -> $target_file"
     ln -sf "$source_file" "$target_file"
 }

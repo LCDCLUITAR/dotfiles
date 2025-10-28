@@ -46,7 +46,7 @@ HOMEBREW_PACKAGES=(
 
     # Enhanced command line utilities (better versions of standard tools)
     "bat"                       # Clone of cat with syntax highlighting and Git integration
-    "exa"                       # Modern replacement for ls (with color and icons)
+    "eza"                       # Modern replacement for ls (with color and icons)
     "ripgrep"                   # Line-oriented search tool (faster grep)
     "fd"                        # Simple, fast alternative to find
     "dust"                      # More intuitive version of du (disk usage)

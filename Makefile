@@ -12,19 +12,19 @@ RED := \033[0;31m
 NC := \033[0m
 
 define print_status
-	@echo -e "$(BLUE)[INFO]$(NC) $(1)"
+	@printf "$(BLUE)[INFO]$(NC) %s\n" "$(1)"
 endef
 
 define print_success
-	@echo -e "$(GREEN)[SUCCESS]$(NC) $(1)"
+	@printf "$(GREEN)[SUCCESS]$(NC) %s\n" "$(1)"
 endef
 
 define print_warning
-	@echo -e "$(YELLOW)[WARNING]$(NC) $(1)"
+	@printf "$(YELLOW)[WARNING]$(NC) %s\n" "$(1)"
 endef
 
 define print_error
-	@echo -e "$(RED)[ERROR]$(NC) $(1)"
+	@printf "$(RED)[ERROR]$(NC) %s\n" "$(1)"
 endef
 
 help: ## Show this help message
@@ -38,7 +38,7 @@ help: ## Show this help message
 	@echo ""
 	@echo "$(BLUE)Examples:$(NC)"
 	@echo "  make install     # Install dotfiles on a new machine"
-	@echo "  make test        # Test installation in dry-run mode"  
+	@echo "  make test        # Test installation in dry-run mode"
 	@echo "  make update      # Update dotfiles from current system"
 	@echo "  make backup      # Create backup of current config files"
 	@echo "  make doctor      # Check system dependencies"
