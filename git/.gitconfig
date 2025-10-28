@@ -1,0 +1,12 @@
+# This is Git’s per-user configuration file.
+[user]
+	name = Luis Chaparro
+	email = luis.chaparro@pizzahut.com
+[pull]
+	ff = only
+[url "https://LXC3592:glpat-2Bd6YUTyTVGz7pjU9J6H@gitlab.com"]
+	insteadOf = https://gitlab.com
+[core]
+	editor = code --wait
+[fetch]
+	prune = true

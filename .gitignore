@@ -1,0 +1,37 @@
+# Sensitive files - NEVER commit these
+.aws/
+.ssh/id_*
+.ssh/*.pem
+.netrc
+*.key
+*password*
+*secret*
+*.env
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/settings.json.backup
+.idea/
+
+# Node modules
+node_modules/
+
+# Backup files
+*.backup
+*.bak

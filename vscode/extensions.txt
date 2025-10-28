@@ -1,0 +1,41 @@
+# Essential VS Code Extensions - Go & JavaScript Focus
+# Core Development Tools
+github.copilot
+github.copilot-chat
+eamodio.gitlens
+gitlab.gitlab-workflow
+editorconfig.editorconfig
+
+# Go Development
+golang.go
+
+# JavaScript/TypeScript Development
+ms-vscode.vscode-typescript-next
+esbenp.prettier-vscode
+dbaeumer.vscode-eslint
+formulahendry.auto-rename-tag
+
+# API Development & Documentation
+adisreyaj.swagger-snippets
+arjun.swagger-viewer
+
+# Diagrams & Documentation
+bierner.markdown-mermaid
+bpruitt-goddard.mermaid-markdown-syntax-highlighting
+aleksandardev.vscode-sequence-diagrams
+
+# Productivity & UI
+pkief.material-icon-theme
+visualstudioexptteam.vscodeintellicode
+ms-vsliveshare.vsliveshare
+buenon.scratchpads
+
+# Remote Development & DevOps
+ms-vscode-remote.remote-containers
+ms-vscode-remote.remote-ssh
+ms-vscode-remote.remote-ssh-edit
+ms-azuretools.vscode-docker
+hashicorp.terraform
+
+# Configuration & Utilities
+redhat.vscode-yaml
