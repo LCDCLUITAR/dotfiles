@@ -39,3 +39,4 @@ node_modules/
 # Backup files
 *.backup
 *.bak
+git/.gitconfig
