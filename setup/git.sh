@@ -35,8 +35,9 @@ GIT_CONFIG_TARGET="$HOME/.gitconfig"
 
 # Check if template exists
 if [[ ! -f "$GIT_CONFIG_TEMPLATE" ]]; then
-    print_error "Git config template not found at $GIT_CONFIG_TEMPLATE"
-    exit 1
+    print_status "Creating $GIT_CONFIG_TEMPLATE"
+    mkdir -p "$(dirname "$GIT_CONFIG_TEMPLATE")"
+    touch "$GIT_CONFIG_TEMPLATE"
 fi
 
 # Interactive configuration
