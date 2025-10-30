@@ -53,5 +53,7 @@
     },
     "security.workspace.trust.untrustedFiles": "open",
     "update.channel": "none",
-    "update.mode": "manual"
+    "update.mode": "manual",
+    "scratchpads.defaultFiletype": "md",
+    "git.autofetch": true
 }
