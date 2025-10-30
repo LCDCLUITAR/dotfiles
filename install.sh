@@ -153,8 +153,18 @@ backup_and_link "$DOTFILES_DIR/shell/.zshrc" "$HOME/.zshrc"
 [ -f "$DOTFILES_DIR/shell/.bashrc" ] && backup_and_link "$DOTFILES_DIR/shell/.bashrc" "$HOME/.bashrc"
 [ -f "$DOTFILES_DIR/shell/.bash_profile" ] && backup_and_link "$DOTFILES_DIR/shell/.bash_profile" "$HOME/.bash_profile"
 
-# Link git config
-backup_and_link "$DOTFILES_DIR/git/.gitconfig" "$HOME/.gitconfig"
+# Setup Git configuration interactively
+print_status "Setting up Git configuration..."
+if [[ "$DRY_RUN" == "true" ]]; then
+    print_dry_run "source $DOTFILES_DIR/setup/git.sh --dry-run"
+else
+    # Run Git setup in a separate process
+    if source "$DOTFILES_DIR/setup/git.sh"; then
+        print_success "Git configuration setup completed"
+    else
+        print_warning "Git configuration setup had issues, but continuing..."
+    fi
+fi
 
 # Link application configs
 backup_and_link "$DOTFILES_DIR/config/thefuck/settings.py" "$HOME/.config/thefuck/settings.py"

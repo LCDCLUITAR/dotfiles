@@ -8,6 +8,10 @@
 *secret*
 *.env
 
+# Personal Git configurations with real data
+git/.gitconfig.personal
+.gitconfig.personal
+
 # OS generated files
 .DS_Store
 .DS_Store?

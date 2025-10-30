@@ -101,6 +101,12 @@ vscode-install: ## Install VS Code extensions and settings
 	@./setup/vscode.sh
 	$(call print_success,VS Code setup completed!)
 
+git-config: ## Interactively configure Git with personal information
+	$(call print_status,Setting up Git configuration...)
+	@chmod +x setup/git.sh
+	@./setup/git.sh
+	$(call print_success,Git configuration completed!)
+
 link: ## Create symlinks for dotfiles (without installing dependencies)
 	$(call print_status,Creating symlinks for configuration files...)
 	@ln -sf $(PWD)/shell/.zshrc ~/.zshrc

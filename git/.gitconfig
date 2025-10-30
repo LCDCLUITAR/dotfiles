@@ -1,10 +1,10 @@
-# This is Git’s per-user configuration file.
+# This is Git's per-user configuration file.
 [user]
-	name = Luis Chaparro
-	email = luis.chaparro@pizzahut.com
+	name = YOUR_NAME
+	email = YOUR_EMAIL
 [pull]
 	ff = only
-[url "https://LXC3592:glpat-2Bd6YUTyTVGz7pjU9J6H@gitlab.com"]
+[url "YOUR_GITLAB_USERNAME:YOUR_GITLAB_TOKEN@gitlab.com"]
 	insteadOf = https://gitlab.com
 [core]
 	editor = code --wait
